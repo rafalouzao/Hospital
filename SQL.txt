@@ -1,0 +1,85 @@
+CREATE TABLE `Quarto` (
+  `quartoId` integer,
+  `quartoNumero` integer,
+  `quartoTipo` varchar(255)
+);
+
+CREATE TABLE `TipoQuarto` (
+  `tipoQuartoId` integer,
+  `tipoQuartoDescricao` integer,
+  `tipoValorDiaria` varchar(255)
+);
+
+CREATE TABLE `Internacao` (
+  `interId` integer,
+  `interDataEntrada` varchar(255),
+  `interPrevAlta` varchar(255),
+  `interProcedimento` varchar(255)
+);
+
+CREATE TABLE `Medicos` (
+  `medNome` varchar(255),
+  `medTipo` varchar(255),
+  `medEspecialidade` varchar(255)
+);
+
+CREATE TABLE `Pacientes` (
+  `pacNome` varchar(255),
+  `pacDataNasc` varchar(255),
+  `pacEndereco` varchar(255),
+  `pacTel` integer,
+  `pacEmail` varchar(255),
+  `pacCPF` integer,
+  `pacRG` integer,
+  `pacConvenio` varchar(255)
+);
+
+CREATE TABLE `Consulta` (
+  `pacNome` varchar(255),
+  `pacDataNasc` varchar(255),
+  `pacEndereco` varchar(255),
+  `pacTel` integer,
+  `pacEmail` varchar(255),
+  `pacCPF` integer,
+  `pacRG` integer,
+  `pacConvenio` varchar(255)
+);
+
+CREATE TABLE `Convenio` (
+  `convNome` varchar(255),
+  `convCNPJ` integer,
+  `convTempCar` integer
+);
+
+CREATE TABLE `Receita` (
+  `receitaPac` varchar(255),
+  `receitaMed` varchar(255),
+  `receitaMedicamentos` varchar(255),
+  `receitaQtd` integer,
+  `receitaInf` varchar(255)
+);
+
+CREATE TABLE `Enfermeiro` (
+  `enferId` integer,
+  `enferNome` varchar(255),
+  `enferCPF` varchar(255),
+  `enferCRE` varchar(255)
+);
+
+ALTER TABLE `TipoQuarto` ADD FOREIGN KEY (`tipoQuartoDescricao`) REFERENCES `Quarto` (`quartoNumero`);
+
+ALTER TABLE `Internacao` ADD FOREIGN KEY (`interDataEntrada`) REFERENCES `Quarto` (`quartoNumero`);
+
+ALTER TABLE `Enfermeiro` ADD FOREIGN KEY (`enferNome`) REFERENCES `Internacao` (`interDataEntrada`);
+
+ALTER TABLE `Medicos` ADD FOREIGN KEY (`medNome`) REFERENCES `Internacao` (`interPrevAlta`);
+
+ALTER TABLE `Consulta` ADD FOREIGN KEY (`pacCPF`) REFERENCES `Medicos` (`medTipo`);
+
+ALTER TABLE `Pacientes` ADD FOREIGN KEY (`pacNome`) REFERENCES `Consulta` (`pacNome`);
+
+ALTER TABLE `Receita` ADD FOREIGN KEY (`receitaQtd`) REFERENCES `Consulta` (`pacConvenio`);
+
+ALTER TABLE `Convenio` ADD FOREIGN KEY (`convCNPJ`) REFERENCES `Pacientes` (`pacConvenio`);
+
+ALTER TABLE `Pacientes` ADD FOREIGN KEY (`pacCPF`) REFERENCES `Receita` (`receitaMedicamentos`);
